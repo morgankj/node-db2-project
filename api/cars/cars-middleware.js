@@ -3,30 +3,36 @@ var vinValidator = require('vin-validator');
 
 const checkCarId = async (req, res, next) => {
   // DO YOUR MAGIC
-  const { id } = req.params.id;
   try {
-    const possibleCar = await Car.getById(id);
+    const possibleCar = await Car.getById(req.params.id);
     if (possibleCar) {
       req.car = possibleCar;
       next();
     } else {
-      next({ status: 404, message: `car with id ${id} is not found` });
+      next({ status: 404, message: `car with id ${req.params.id} is not found` });
     }
   } 
   catch (err) {
     next(err);
   }
-
 }
 
 const checkCarPayload = (req, res, next) => {
   // DO YOUR MAGIC
   const { vin, make, model, mileage } = req.body;
-  if (!vin || !make || !model || !mileage) {
-    next({ status: 400, message: `<field name> is missing` });
-  } else {
-    next();
+  if (!vin) {
+    next({ status: 400, message: `vin is missing` });
   }
+  if (!make) {
+    next({ status: 400, message: `make is missing` });
+  }
+  if (!model) {
+    next({ status: 400, message: `model is missing` });
+  }
+  if (!mileage) {
+    next({ status: 400, message: `mileage is missing` });
+  }
+  next();
 }
 
 const checkVinNumberValid = (req, res, next) => {
