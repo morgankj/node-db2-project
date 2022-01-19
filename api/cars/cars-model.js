@@ -13,6 +13,7 @@ const getById = (id) => {
 const getByVin = (vin) => {
   // ADDED THIS MYSELF
   return db('cars').where('vin', vin).first();
+
 }
 
 const create = async (car) => {
